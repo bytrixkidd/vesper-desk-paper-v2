@@ -1,0 +1,254 @@
+{
+  "at": "2026-09-13T11:22:11.333Z",
+  "paperOnly": true,
+  "cases": [
+    {
+      "name": "legacy-key-untouched",
+      "start": "vesper-paper-v6 mit Verlust-Watch",
+      "action": "splitBooks",
+      "expected": "legacyUntouched true, v6 Inhalt gleich",
+      "actual": "true len=1411",
+      "pass": true
+    },
+    {
+      "name": "ids-getrennt",
+      "start": "ein Speicher",
+      "action": "Index lesen",
+      "expected": "active book-paper-v2, archive book-legacy-incomplete",
+      "actual": "book-paper-v2 / book-legacy-incomplete,book-paper-v2",
+      "pass": true
+    },
+    {
+      "name": "alte-verluste-bleiben",
+      "start": "Archiv mit negativem PnL",
+      "action": "combinedReport",
+      "expected": "archiveIncomplete true, PnL nicht gelöscht",
+      "actual": "incomplete=true pnl=-65.51999999999998",
+      "pass": true
+    },
+    {
+      "name": "goldman-keine-order",
+      "start": "leeres paper-v2, GS +3,73 % Freitag",
+      "action": "goldmanReport",
+      "expected": "exists false, executable false",
+      "actual": "exists=false exec=false status=none",
+      "pass": true
+    },
+    {
+      "name": "goldman-boersenstart-kein-fill",
+      "start": "GS planned 200 $",
+      "action": "revalidate marketJustOpened",
+      "expected": "keep-planned, Grund Börsenstart",
+      "actual": "keep-planned Börsenstart allein ist kein neuer Kaufgrund. Die Order bleibt geplant, bis eine ",
+      "pass": true
+    },
+    {
+      "name": "goldman-event-cancel",
+      "start": "GS planned, Session +3,73 %",
+      "action": "revalidate eventNotRegime",
+      "expected": "cancel",
+      "actual": "cancel Goldman plus stark an einem Sitzungstag ist Ereignis, kein Regime. Nachkauf nur auf Schwäc",
+      "pass": true
+    },
+    {
+      "name": "kein-modell-im-handel",
+      "start": "Cash 300 $, live, Sonntag",
+      "action": "executePulseTick",
+      "expected": "modelCalls [], gate.ok false, planned oder null",
+      "actual": "models=0 gate=false fills=none decision=null",
+      "pass": true
+    },
+    {
+      "name": "zeitstempel-getrennt",
+      "start": "kein Eingriff",
+      "action": "execution stamp",
+      "expected": "auch ohne Fill: Entscheidung dokumentiert",
+      "actual": "execution=null (decidePulse null oder idempotent)",
+      "pass": true
+    },
+    {
+      "name": "bots-erklaeren-nicht-entscheiden",
+      "start": "huddle",
+      "action": "botLines",
+      "expected": "Erklärungen vorhanden, Entscheidung nur decidePulse",
+      "actual": "expl=4 decisionBot=none",
+      "pass": true
+    },
+    {
+      "name": "idempotent-doppeleingang",
+      "start": "erster Tick fills=0",
+      "action": "zweiter identischer Tick",
+      "expected": "keine zweite Buchung derselben dataKey",
+      "actual": "first=0 second=0 keys=",
+      "pass": true
+    },
+    {
+      "name": "reload",
+      "start": "cashEur 200, bookVersion 3",
+      "action": "persist + splitBooks",
+      "expected": "dieselben Werte",
+      "actual": "cash=200 ver=3",
+      "pass": true
+    },
+    {
+      "name": "zwei-tabs",
+      "start": "Tab A version 5, Tab B version 2",
+      "action": "persistBook B",
+      "expected": "wrote false, NAV bleibt 250",
+      "actual": "wrote=false nav=250 reason=Veralteter Tab. Gespeicherte Version ist neuer.",
+      "pass": true
+    },
+    {
+      "name": "sitzung-zu",
+      "start": "Sonntag, closeDate Freitag",
+      "action": "canSimulateFill",
+      "expected": "ok false, PLANNED",
+      "actual": "false Sitzung zu. Keine neue Ausführung zum alten Schlusskurs. Order bleibt PLANNED.",
+      "pass": true
+    },
+    {
+      "name": "veralteter-schluss",
+      "start": "closeDate != Sitzungstag",
+      "action": "canSimulateFill live",
+      "expected": "ok false",
+      "actual": "false Sitzung zu. Keine neue Ausführung zum alten Schlusskurs. Order bleibt PLANNED.",
+      "pass": true
+    },
+    {
+      "name": "cash-limit",
+      "start": "300 $ Cash, zwei Orders je 240 $",
+      "action": "competingBuys + cashSplit",
+      "expected": "eine akzeptiert, eine blockiert, reserved 240, available 60",
+      "actual": "acc=1 blk=1 reserved=480 avail=0",
+      "pass": true
+    },
+    {
+      "name": "zweiter-kauf-nach-reserve",
+      "start": "240 $ reserviert von 300",
+      "action": "decidePulse mit reservedUsd",
+      "expected": "kein zweiter 240-$-Kauf oder spend <= available",
+      "actual": "null",
+      "pass": true
+    },
+    {
+      "name": "kosten-10bp",
+      "start": "10 $ auf Kurs 100, buy",
+      "action": "sharesFromNotional",
+      "expected": "price 100.1, shares gerundet 4 dp",
+      "actual": "px=100.1 sh=0.0999 spent=10",
+      "pass": true
+    },
+    {
+      "name": "bruch-und-rest",
+      "start": "buyTicker 10 $ @ 100",
+      "action": "buyTicker",
+      "expected": "shares 4 dp, spent = shares * 100.1, Rest bleibt ungekauft",
+      "actual": "sh=0.0999 spent=9.99999",
+      "pass": true
+    },
+    {
+      "name": "gap-durch-stop",
+      "start": "Einstieg 100, Stop 98, Last 97",
+      "action": "gapFillPrice",
+      "expected": "Fill 97, nicht Stop",
+      "actual": "97",
+      "pass": true
+    },
+    {
+      "name": "stop-entscheidung",
+      "start": "GS 0.2 @ 97 nach 100",
+      "action": "decidePulse + apply",
+      "expected": "Verkauf zum vorliegenden Kurs 97 (nach Kosten)",
+      "actual": "pull GS sold=19.3806 sharesLeft=0",
+      "pass": true
+    },
+    {
+      "name": "ansichten-gleich",
+      "start": "leeres Book, nur Cash",
+      "action": "CHECK vs identity vs cashSplit",
+      "expected": "equity 0, cash total=available=300, reserved 0, holdings leer",
+      "actual": "eq=0 cashT=300 avail=300 hold=0 identCash=300.00 split=300",
+      "pass": true
+    },
+    {
+      "name": "check-leer",
+      "start": "0 Stücke, 300 $ Cash",
+      "action": "buildCheck",
+      "expected": "equityWeight 0, targets > 0, openOrders 0, cash getrennt",
+      "actual": "eq=0 targets=3 orders=0 total=300 reserved=0 avail=300",
+      "pass": true
+    },
+    {
+      "name": "kein-kauf-ohne-s1",
+      "start": "300 $ Cash, 0 Stücke, keine Scores",
+      "action": "decidePulse",
+      "expected": "null (HALTEN / NO_TRADE)",
+      "actual": "null",
+      "pass": true
+    },
+    {
+      "name": "s1-groesse-nicht-80pct",
+      "start": "S1 AVGO rel +3, GS +4 aber Session +3.73",
+      "action": "decidePulse + riskSizeUsd",
+      "expected": "AVGO buy, spend ≈ 45 (15 % Cap), nicht 240",
+      "actual": "buy AVGO 45 hyp=S1-RS",
+      "pass": true
+    },
+    {
+      "name": "goldman-event-kein-s1",
+      "start": "GS rel stark, Session +3.73",
+      "action": "overlayTrigger GS",
+      "expected": "null wegen Ereignis",
+      "actual": "null",
+      "pass": true
+    },
+    {
+      "name": "boersenstart-kein-fill",
+      "start": "AVGO planned 45 $",
+      "action": "executePulseTick marketJustOpened",
+      "expected": "bleibt planned",
+      "actual": "planned gate=true",
+      "pass": true
+    },
+    {
+      "name": "s2-ohne-s1",
+      "start": "AVGO 15-Tage +2,4 %, rel −0,1 (kein S1), letzter Tag −2,1 %",
+      "action": "overlayTrigger + decidePulse",
+      "expected": "S2-PULL, buy AVGO",
+      "actual": "trig=S2-PULL s1null=true dec=S2-PULL AVGO",
+      "pass": true
+    },
+    {
+      "name": "s1-vor-s2",
+      "start": "JPM rel +3 und Tag −2 %",
+      "action": "overlayTrigger",
+      "expected": "S1-RS, nicht S2",
+      "actual": "S1-RS",
+      "pass": true
+    },
+    {
+      "name": "stop-seed-vol",
+      "start": "Stop 2 %, Seed-Vol SPY 0,7 % AVGO 1,7 %",
+      "action": "stopStudy generateBars",
+      "expected": "Zeilen für SPY und AVGO, ATR nicht null, Urteil ohne Optimum-Anspruch",
+      "actual": "spyAtr=0.436 avgoAtr=1.208 vs=1.66 data=seed-bars",
+      "pass": true
+    },
+    {
+      "name": "ablauf-s2",
+      "start": "Sonntag Sitzung zu, S2 AVGO",
+      "action": "planned → marketJustOpened → später Fill",
+      "expected": "planned, bleibt planned am Open, dann simulated_filled; 1 Order",
+      "actual": "sun=planned open=planned fill=simulated_filled n=1 cost=10 px=360 at=2026-09-14T17:45:00.000Z valid=2026-09-14T16:00:00.000-04:00",
+      "pass": true
+    },
+    {
+      "name": "vergleich-abc",
+      "start": "300 $ identisch, Seed-SPY 20 Tage",
+      "action": "tapeCompare",
+      "expected": "A bereit, B nicht implementiert, C Zahl oder UNBEKANNT",
+      "actual": "A=true:0 B=false C=true:-2.053 ids=exp-paper-v2-2026-09-compare-a-rules",
+      "pass": true
+    }
+  ]
+}

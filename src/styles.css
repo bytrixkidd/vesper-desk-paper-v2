@@ -1,0 +1,385 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #090a0b;
+  --color-surface: #111314;
+  --color-elevated: #181b1d;
+  --color-fg: #e6e4df;
+  --color-muted: #8a8f8b;
+  --color-subtle: #5e6360;
+  --color-primary: #c8d4cc;
+  --color-primary-foreground: #0b0d0c;
+  --color-border: rgba(230, 228, 223, 0.1);
+  --color-border-strong: rgba(230, 228, 223, 0.18);
+  --color-long: #5aa07a;
+  --color-short: #c45c4e;
+  --color-warn: #c4a056;
+  --color-ring: #c8d4cc;
+  --color-background: #090a0b;
+  --color-foreground: #e6e4df;
+  --color-card: #111314;
+  --color-card-foreground: #e6e4df;
+  --color-accent: #1c2220;
+  --color-accent-foreground: #e6e4df;
+  --color-destructive: #c45c4e;
+  --color-input: rgba(230, 228, 223, 0.1);
+  --color-secondary: #181b1d;
+  --color-secondary-foreground: #e6e4df;
+  --color-popover: #181b1d;
+  --color-popover-foreground: #e6e4df;
+  --color-muted-foreground: #8a8f8b;
+
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", ui-monospace, Menlo, monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius: 10px;
+
+  --shadow-border: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-border-hover: 0 0 0 1px rgba(255, 255, 255, 0.14);
+
+  --text-2xs: 0.6875rem;
+
+  --width-sidebar: 15.625rem;
+  --width-companion: 25rem;
+  --height-status: 3.25rem;
+  --ease-shell: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body,
+  #app {
+    height: 100%;
+    min-height: 100%;
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-primary) 30%, transparent);
+    color: var(--color-fg);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--color-fg) 18%, transparent) transparent;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes tape-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes core-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.035);
+    opacity: 0.9;
+  }
+}
+
+@keyframes core-think {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes core-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.tape-track {
+  animation: tape-scroll 42s linear infinite;
+}
+
+.pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+.page-fade {
+  animation: page-fade 280ms var(--ease-shell) both;
+}
+
+.enter-up {
+  animation: fade-up 420ms var(--ease-shell) both;
+}
+
+.enter-up-1 {
+  animation-delay: 60ms;
+}
+.enter-up-2 {
+  animation-delay: 120ms;
+}
+.enter-up-3 {
+  animation-delay: 180ms;
+}
+
+.vesper-core {
+  isolation: isolate;
+  color: var(--color-primary);
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.vesper-core:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-primary) 55%, transparent);
+  outline-offset: 6px;
+  border-radius: 9999px;
+}
+
+.vesper-core-svg {
+  overflow: visible;
+  filter: drop-shadow(0 18px 40px color-mix(in oklab, black 40%, transparent));
+}
+
+.vesper-core-svg .vesper-glow,
+.vesper-core-svg .vesper-ticks,
+.vesper-core-svg .vesper-spin,
+.vesper-core-svg .vesper-orbit,
+.vesper-core-svg .vesper-mid,
+.vesper-core-svg .vesper-sweep {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+.vesper-glow {
+  animation: core-glow 6.5s ease-in-out infinite;
+}
+
+.vesper-ticks {
+  transform: scale(var(--vesper-mic, 1));
+  transition: transform 120ms var(--ease-shell);
+}
+
+.vesper-spin {
+  animation: core-think 28s linear infinite;
+}
+
+.vesper-orbit {
+  animation: core-think 48s linear infinite reverse;
+}
+
+.vesper-mid {
+  animation: core-breathe 7s ease-in-out infinite;
+}
+
+.vesper-sweep {
+  opacity: 0;
+}
+
+.vesper-letter {
+  stroke: var(--color-fg);
+}
+
+.vesper-core[data-state="ready"] .vesper-spin {
+  animation-duration: 36s;
+}
+
+.vesper-core[data-state="listening"] {
+  color: var(--color-long);
+}
+
+.vesper-core[data-state="listening"] .vesper-glow {
+  animation-duration: 2.2s;
+}
+
+.vesper-core[data-state="understanding"] .vesper-disc-ring {
+  animation: core-glow 0.6s ease-out 1;
+}
+
+.vesper-core[data-state="analyzing"] .vesper-spin {
+  animation-duration: 7s;
+}
+
+.vesper-core[data-state="opening"] .vesper-sweep {
+  opacity: 0.9;
+  animation: core-think 1.6s var(--ease-shell) 1;
+}
+
+.vesper-core[data-state="marking"] .vesper-mid {
+  animation: core-glow 0.7s ease-out 1;
+}
+
+.vesper-core[data-state="speaking"] {
+  color: var(--color-primary);
+}
+
+.vesper-core[data-state="speaking"] .vesper-disc-ring {
+  animation: core-breathe 1.6s ease-in-out infinite;
+}
+
+.vesper-core[data-state="warning"] {
+  color: var(--color-warn);
+}
+
+.vesper-room {
+  position: relative;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.vesper-room-bg {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 46%, color-mix(in oklab, var(--color-primary) 8%, transparent), transparent 70%),
+    radial-gradient(circle at 50% 100%, color-mix(in oklab, var(--color-elevated) 70%, transparent), transparent 46%);
+}
+
+.vesper-room-grid {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--color-fg) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--color-fg) 5%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 55% 50% at 50% 48%, black, transparent 78%);
+  opacity: 0.35;
+}
+
+[data-vesper-on="1"] {
+  outline: 1px solid color-mix(in oklab, var(--color-primary) 55%, transparent);
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+  animation: mark-pulse 1.4s var(--ease-shell) 1;
+}
+
+@keyframes mark-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-primary) 35%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.shell-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.vesper-dock {
+  pointer-events: auto;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.chip-row::-webkit-scrollbar {
+  display: none;
+}

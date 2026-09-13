@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="VESPER">
+  <rect width="32" height="32" fill="#090A0B"/>
+  <rect x="1" y="1" width="30" height="30" fill="none" stroke="#C8D4CC" stroke-width="1" shape-rendering="crispEdges"/>
+  <path fill="#E6E4DF" d="M6.6 7.5h5.9l-0.5 1.4L16 21.8l4-12.9-0.5-1.4h5.9L17.3 26.2h-2.6z"/>
+</svg>
