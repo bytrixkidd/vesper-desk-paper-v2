@@ -1,6 +1,6 @@
 # Vesper Desk · Paper-Paket
 
-Nur virtuelles Geld. Kein Broker, kein Echtgeld. Legacy-Archiv (`book-legacy-incomplete` / `vesper-paper-v6`) nicht überschreiben.
+Grok-Programm (xAI). Kein Claude. Nur virtuelles Geld. Kein Broker, kein Echtgeld. Legacy-Archiv (`book-legacy-incomplete` / `vesper-paper-v6`) nicht überschreiben.
 
 Stand dieses Pakets: 13.09.2026. Parameter `paper-v2-hyp-1`. Experiment aktiv: `exp-paper-v2-2026-09` / `book-paper-v2`.
 
