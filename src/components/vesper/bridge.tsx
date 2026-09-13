@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { VesperCore } from "@/components/vesper/core";
 import { MicMeter } from "@/components/vesper/meter";
 import { AskBlocks } from "@/components/vesper/ask-blocks";
-import { ZipDownload } from "@/components/zip-download";
 
 export function VesperBridge() {
   const status = useVesperStore((s) => s.status);
@@ -92,11 +91,6 @@ export function VesperBridge() {
       </svg>
 
       <div className="relative z-10 flex min-h-0 flex-1 flex-col px-4 pb-6 pt-4 sm:px-8">
-        <div className="mx-auto mb-4 w-full max-w-lg shrink-0 rounded-lg bg-elevated p-4 shadow-[var(--shadow-border)]">
-          <p className="text-xs tracking-[0.12em] text-muted uppercase">Code-Paket</p>
-          <p className="mt-1 text-sm text-fg">ZIP mit Paper-Code, Tests und Anleitung. Nicht in der App — auf deinem Gerät.</p>
-          <ZipDownload className="mt-3" />
-        </div>
         <div className="mx-auto grid w-full max-w-5xl shrink-0 grid-cols-3 gap-2">
           {(ready ? hints : []).map((h, i) => (
             <button

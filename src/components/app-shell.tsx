@@ -1,6 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Download, Menu } from "lucide-react";
-import { toast } from "sonner";
+import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CATCH_UP_MAX, readAutoPref, TICK_MS } from "@/lib/autopilot";
 import { formatUsd } from "@/lib/format";
@@ -18,7 +17,6 @@ import { BookBar } from "@/components/desks/book-strip";
 import { VesperDock } from "@/components/vesper/dock";
 import { VesperHost } from "@/components/vesper/host";
 import { Toaster } from "sonner";
-import { CODE_ZIP_HREF, CODE_ZIP_NAME } from "@/lib/code-zip";
 
 function Brand() {
   return (
@@ -156,16 +154,6 @@ function TopStatusBar({ onMenu }: { onMenu: () => void }) {
         <span className="hidden text-2xs text-subtle xl:inline">{liveStatus === "live" ? "Live offen" : "Live aus"}</span>
         <Button size="sm" variant={autoPilot ? "ghost" : "secondary"} onClick={() => setAutoPilot(!autoPilot)}>
           {autoPilot ? "Halt" : "Autopilot"}
-        </Button>
-        <Button asChild size="sm" variant="default">
-          <a
-            href={CODE_ZIP_HREF}
-            download={CODE_ZIP_NAME}
-            onClick={() => toast.message("Suche in Downloads nach Vesper-Paper-Code.zip")}
-          >
-            <Download />
-            Code herunterladen
-          </a>
         </Button>
         {pathname !== "/" ? (
           <Button size="sm" variant={open ? "secondary" : "ghost"} onClick={() => setOpen(!open)}>

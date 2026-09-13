@@ -30,7 +30,6 @@ import { PulseTape } from "@/components/desks/pulse-tape";
 import { TapeChart } from "@/components/desks/tape-chart";
 import { CheckPanel } from "@/components/desks/check-panel";
 import { useVesperFocus } from "@/lib/vesper/use-focus";
-import { ZipDownload } from "@/components/zip-download";
 
 export function CommandCenter() {
   const briefs = useDeskStore((s) => s.briefs);
@@ -99,15 +98,6 @@ export function CommandCenter() {
 
   return (
     <div className="space-y-6">
-      <Panel className="border-primary/40 bg-elevated p-5">
-        <p className="text-xs tracking-[0.14em] text-muted uppercase">Download</p>
-        <h2 className="mt-1 font-display text-2xl text-fg">Code-Paket liegt hier</h2>
-        <p className="mt-1 max-w-xl text-sm text-muted">
-          ZIP mit aktuellem Paper-Code, Tests und Startanleitung. Kein Echtgeld, keine Zugangsdaten. Die Datei kommt in den Ordner Downloads, nicht in diese Vorschau.
-        </p>
-        <ZipDownload className="mt-4" />
-      </Panel>
-
       <header className="enter-up space-y-2">
         <Kicker>Kommando · {monthLabel(month)} · Autopilot {autoPilot ? "an" : "Halt"}</Kicker>
         <h1 className="max-w-3xl text-3xl text-fg sm:text-4xl">Die Bots laufen. Du liest das Weekly.</h1>

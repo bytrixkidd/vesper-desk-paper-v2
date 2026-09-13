@@ -142,25 +142,7 @@ function authPopupPlugin(): Plugin {
   };
 }
 
-function zipDownloadPlugin(): Plugin {
-  return {
-    name: "vesper-zip-download",
-    apply: "serve",
-    configureServer(server) {
-      server.middlewares.use((req, res, next) => {
-        const pathOnly = (req.url ?? "").split("?", 1)[0] ?? "";
-        if (!pathOnly.endsWith(".zip")) {
-          next();
-          return;
-        }
-        const name = pathOnly.split("/").pop() ?? "Vesper-Paper-Code.zip";
-        res.setHeader("Content-Type", "application/zip");
-        res.setHeader("Content-Disposition", `attachment; filename="${name}"`);
-        next();
-      });
-    },
-  };
-}
+// `0.0.0.0:8080` is the live-preview contract — don't change host/port.
 // The dev server starts once `src/router.tsx` and `src/routes/` exist — see
 // AGENTS.md § "First scaffold".
 export default defineConfig(({ command, isPreview }) => ({
@@ -183,7 +165,6 @@ export default defineConfig(({ command, isPreview }) => ({
     appEnvPlugin(),
     // PWA head + ?install=1 tutorial page; runs before Start/Nitro.
     grokPwaPlugin(),
-    zipDownloadPlugin(),
     tailwindcss(),
     tanstackStart(),
     ...(command === "build" || isPreview
